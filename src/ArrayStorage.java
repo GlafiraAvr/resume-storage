@@ -1,8 +1,19 @@
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+
+    public  class OverSizeException extends Exception{
+
+        public OverSizeException(int s) {
+            super(Integer.toString(s));
+        }
+    }
+
+
+
+    Resume[] storage = new Resume[100];
     int size;
 
 
@@ -13,10 +24,23 @@ public class ArrayStorage {
         size = 0;
     }
 
-    void save(Resume r) {
+    /**
+     * Add new resume in storage
+     * @param r new resume
+     * @return current index of new resume or -1 if resume already in storage
+     * @throws OverSizeException
+     */
 
+   int save(Resume r) throws  OverSizeException {
+       if (size==storage.length)
+           throw  new OverSizeException(storage.length) ;
+        if (get(r.uuid)!=null)
+        {
+            return -1;
+        }
         storage[size] = r;
         size++;
+       return  size-1;
     }
 
     Resume get(String uuid) {
@@ -40,12 +64,17 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
+
+
         Resume [] result = new Resume[size];
         System.arraycopy(storage, 0, result, 0, size);
            return result;
+
+
     }
 
     int size() {
         return size;
     }
+
 }
