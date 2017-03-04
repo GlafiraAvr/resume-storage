@@ -32,7 +32,15 @@ public class MainArray {
                 case "save":
                     r = new Resume();
                     r.uuid = uuid;
-                    ARRAY_STORAGE.save(r);
+                    try {
+
+                        int num = ARRAY_STORAGE.save(r);
+                        if (num>0){
+                            System.out.println(" Обьект добавлен № "+num );
+                        }
+                    } catch (ArrayStorage.OverSizeException e) {
+                        System.out.println("Переполнение массива максимальный размер "+e.getMessage());
+                    }
                     printAll();
                     break;
                 case "delete":
